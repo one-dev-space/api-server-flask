@@ -12,4 +12,5 @@ def make_shell_context():
             }
 
 if __name__ == '__main__':
+    app.config['APP_ALREADY_STARTED'] = False
     app.run(debug=True, host="0.0.0.0")

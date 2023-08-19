@@ -20,10 +20,13 @@ rest_api.init_app(app)
 CORS(app)
 
 # Setup database
-@app.before_first_request
+@app.before_request
 def initialize_database():
     try:
-        db.create_all()
+        if not app.config['APP_ALREADY_STARTED']:
+            app.config['APP_ALREADY_STARTED'] = True
+            print("initialize_database")
+            db.create_all()
     except Exception as e:
 
         print('> Error: DBMS Exception: ' + str(e) )
@@ -53,3 +56,5 @@ def after_request(response):
             response.set_data(json.dumps(response_data))
         response.headers.add('Content-Type', 'application/json')
     return response
+
+# initialize_database()
